@@ -27,8 +27,8 @@ for sosok in range(2):
             for start in [2,10,18,26,34,42,50,58,66,74]:
                 for i in range(start,start+5):
                     selector1 = f'#contentarea > div.box_type_l > table.type_2 > tbody > tr:nth-child({i}) > td:nth-child(2) > a'
-                    stock=convert_data.select_one(selector1)
-                    code=stock['href'][-6:]
+                    stock=convert_data.select_one(selector1) # 태그에 속성과 값을 가져옴
+                    code=stock['href'][-6:] # 종목코드 추출
                     name = stock.string
                     print(code,name,end='') # 종목코드,종목명
                     selector1 = f'#contentarea > div.box_type_l > table.type_2 > tbody > tr:nth-child({i}) > td:nth-child(3)'

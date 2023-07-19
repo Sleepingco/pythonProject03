@@ -9,25 +9,26 @@ try:
     print('MySQL Drill DB 연결실패')
     exit(0)
   cur = conn.cursor()
-  # cur.execute('delete from stock')
-  url = f'https://finance.naver.com/marketindex/?tabSel=exchange#tab_section'
+  cur.execute('delete from xrate')
+  url = f'https://finance.naver.com/marketindex/exchangeList.naver'
   src_code = urllib.request.urlopen(url)
   plain_text = src_code.read().decode('euc-kr')
   convert_data = BeautifulSoup(plain_text, 'html.parser')
-  for i in range(59):
+  for i in range(1,59):
     selector1 = f'body > div > table > tbody > tr:nth-child({i}) > td.tit > a'
     xrate = convert_data.select_one(selector1)
-    name = xrate.string
-    print(type(name))
+    print(xrate)
+    name = xrate.string.strip()
     print(name, end='')  # 종목명
     selector1 = f'body > div > table > tbody > tr:nth-child({i}) > td.sale'
     standard = convert_data.select_one(selector1)
-    print(f'{standard:10.2f}', end='')  # 현재가
+    standard = standard.string.replace(',', '')
+    print(f'{standard}', end='')  # 현재가
     selector1 = f'body > div > table > tbody > tr:nth-child({i}) > td:nth-child(7)'
     conv = convert_data.select_one(selector1)
     conv = conv.string.replace(',', '')
-    print(f'{conv:5.3f}')  # 시가총액
-    sql = f"replace into stock values ('{name}',{standard},{conv})"
+    print(f'{conv}')  # 시가총액
+    sql = f"insert into xrate values ('{name}',{standard},{conv})"
     cur.execute(sql)
 except Exception as e:
   print('error:', e)

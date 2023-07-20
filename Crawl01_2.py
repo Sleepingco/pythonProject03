@@ -40,7 +40,7 @@ for sosok in range(2):
                     amount = amount.string.replace(',','')
                     print(f'{amount:20s}') # 시가총액
                     # alter table stock change name name varchar(64) not null;
-                    sql = f"replace into stock values ({sosok},'{code}','{name}',{price},{amount})"
+                    sql = f"replace into stock values ({sosok},'{code}','{name}',{price},{amount})" #  replace into tbl 같은 pk값이 있으면 update로 작동하고 새 pk 값이면 insert로 작동함 mysql에만 존재하고 만약 pk값이 없으면 중복된 값을 계속 넣는다
                     cur.execute(sql)
     except Exception as e:
         print('Error : ', e)
